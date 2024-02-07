@@ -1,0 +1,29 @@
+<article>
+  <ul>
+      <li>
+      Место: {{ post.location }}              
+      </li>
+      <li>
+      Дата: {{ post.date }}
+      </li>
+      <li>
+      Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
+      </li>
+  </ul>          
+  <p>
+    {% if post_type == 'short' %}
+
+      {% for line in post.short_text_lines %}
+        {{ line }}<br>
+      {% endfor %}
+      </p>
+      <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
+
+    {% else %}
+
+      {% for line in post.text_lines %}
+        {{ line }}<br>
+      {% endfor %}
+
+    {% endif %}
+</article>

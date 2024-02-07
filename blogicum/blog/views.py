@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
+import re
 from typing import Dict, List, Union
 
 
@@ -49,6 +50,14 @@ posts: List[Dict[str, Union[int, str]]] = [
 
 posts_dict = {post['id']: post for post in posts}
 
+for post in posts:
+    post['text_lines'] = post['text'].splitlines()
+    words_with_breaks = re.findall(r'\S+\s*', post['text'])
+    short_text = ' '.join(words_with_breaks[:10])
+    post['short_text_lines'] = short_text.splitlines()
+    if len(words_with_breaks) > 10:
+        post['short_text_lines'][-1] += '...'
+
 
 def index(request):
     return render(request, 'blog/index.html', {'posts': posts})
@@ -58,8 +67,6 @@ def post_detail(request, post_id):
     post = posts_dict.get(post_id)
     if post is None:
         raise Http404(f"Пост с id={post_id} не найден.")
-
-    post['text_lines'] = post['text'].split('\n')
 
     return render(request, 'blog/detail.html', {'post': post})
 
