@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}
-  {{ post.location }} {{ post.date }} 
+  {{ post.location }}. {{ post.date }} 
 {% endblock %}
 
 {% block content %}
@@ -19,7 +18,9 @@
       </li>
     </ul>         
     <p>
-      {{ post.text }}
+      {% for line in post.text_lines %}
+        {{ line }}<br>
+      {% endfor %}
     </p>          
   </article>
 {% endblock %}
