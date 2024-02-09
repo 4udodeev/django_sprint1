@@ -1,10 +1,10 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from typing import Dict, List, Union
+from typing import Union
 
 
-posts: List[Dict[str, Union[int, str]]] = [
+posts: list[dict[str, Union[int, str]]] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -47,7 +47,9 @@ posts: List[Dict[str, Union[int, str]]] = [
     },
 ]
 
-posts_dict = {post['id']: post for post in posts}
+posts_dict: dict[int, dict[str, Union[int, str]]] = {
+    post['id']: post for post in posts
+}
 
 
 def index(request):
@@ -57,8 +59,7 @@ def index(request):
 def post_detail(request, post_id):
     post = posts_dict.get(post_id)
     if post is None:
-        raise Http404(f"Пост с id={post_id} не найден.")
-    print(post)
+        raise Http404(f'Пост с id={post_id} не найден.')
     return render(request, 'blog/detail.html', {'post': post})
 
 
